@@ -9,7 +9,7 @@
           span.label.label-default Unread: {{getUnreadPosts.length}}
         ul.list-group
           li.list-group-item(
-            v-for="post in topPosts"
+            v-for="post in paginatedPosts"
           )
             a(
               href="#"
@@ -20,6 +20,19 @@
                 type="button"
                 @click="dismissPost(post)"
               ) &times; Dismiss
+        p.text-right
+          ul.pagination(
+            v-show="topPosts.length"
+          )
+            li(
+              v-for="page in paginationTotalPages"
+              :class="{'active': page === pagination.currentPage}"
+            )
+              a(
+                href="#"
+                @click.prevent="pagination.currentPage = page"
+              ) {{page}}
+
       .col-sm-7
         .right-side(
           v-if="activePost.data"
@@ -81,6 +94,14 @@
 import { mapState, mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      pagination: {
+        currentPage: 1,
+        postsPerPage: 5
+      }
+    }
+  },
   computed: {
     ...mapState([
       'topPosts',
@@ -89,7 +110,17 @@ export default {
     ...mapGetters([
       'getUnreadPosts',
       'getReadPosts'
-    ])
+    ]),
+    paginationTotalPages () {
+      let totalPages = Math.ceil(this.topPosts.length / this.pagination.postsPerPage)
+
+      return totalPages
+    },
+    paginatedPosts () {
+      let start = (this.pagination.currentPage * this.pagination.postsPerPage) - this.pagination.postsPerPage
+
+      return this.topPosts.slice(start, this.pagination.currentPage * this.pagination.postsPerPage)
+    }
   },
   methods: {
     aboutThis () {
@@ -107,6 +138,16 @@ export default {
       this.$store.dispatch('dismissPost', {
         post
       })
+
+      if (!this.paginatedPosts.length) {
+        let currentPage = this.pagination.currentPage
+
+        if (currentPage !== 1) {
+          if (currentPage - 1 !== 0) {
+            this.pagination.currentPage = currentPage - 1
+          }
+        }
+      }
     }
   },
   mounted () {
