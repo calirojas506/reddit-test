@@ -46,17 +46,20 @@
           v-if="activePost.data"
         )
           .panel.panel-default
-            .panel-heading
-              h4.panel-title {{activePost.data.title}}
             .panel-body
-              h4 Author: {{activePost.data.author}}
+              h2 {{activePost.data.title}}
+              h3 Author: {{activePost.data.author}}
                 span.label.label-success.pull-right {{activePost.data.num_comments}} comments
               hr
-              img.img-rounded(
-                :src="activePost.data.thumbnail"
-                v-if="activePost.data.thumbnail !== 'default' && activePost.data.thumbnail !== 'nsfw'"
-                align="left"
+              a(
+                :href="activePost.data.url"
+                target="_blank"
               )
+                img.img-rounded(
+                  :src="activePost.data.thumbnail"
+                  v-if="activePost.data.thumbnail !== 'default' && activePost.data.thumbnail !== 'nsfw'"
+                  align="left"
+                )
               p.
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fringilla orci justo,
                 nec finibus purus consequat vel. Nullam facilisis ligula a tempor feugiat. Nam pulvinar

@@ -4,7 +4,9 @@
       .col-sm-12
         h1
           i.fa.fa-reddit-alien
-          |&nbsp;Mr. Reddit
+          |&nbsp;Mr. Reddit&nbsp;
+          small
+            span.small by Cali Rojas
     router-view
 </template>
 
