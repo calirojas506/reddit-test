@@ -141,9 +141,6 @@ export default {
     formatDate (theDate) {
       return moment(new Date(theDate * 1000), 'YYYYMMDD').fromNow()
     },
-    aboutThis () {
-      alert('Mr. Reddit\nVue.js Test Application\n\nCali Rojas, Costa Rica')
-    },
     setActivePost (post) {
       this.$store.dispatch('setActivePost', {
         post
