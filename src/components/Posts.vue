@@ -181,7 +181,6 @@ export default {
   .c-posts{
     .list-group{
       .list-group-item{
-        // transition: all ease .3s;
 
         a{
           color: $vue-secondary;
