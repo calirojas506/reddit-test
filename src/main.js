@@ -10,6 +10,7 @@ Vue.use(Vuex)
 Vue.config.productionTip = false
 
 require('bootstrap/dist/css/bootstrap.min.css')
+require('font-awesome/css/font-awesome.min.css')
 
 /* eslint-disable no-new */
 new Vue({
