@@ -23,5 +23,8 @@ export default {
   },
   dismissPost (context, payload) {
     context.commit('dismissPost', payload)
+  },
+  dismissAll (context) {
+    context.commit('dismissAll')
   }
 }

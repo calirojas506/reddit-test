@@ -4,9 +4,15 @@
       v-if="topPosts.length"
     )
       .col-sm-5
-        .text-right
-          span.label.label-default Read: {{getReadPosts.length}}
-          span.label.label-default Unread: {{getUnreadPosts.length}}
+        .text-left
+          button.btn.btn-danger(
+            type="button"
+            @click="dismissAll"
+          ) &times; Dismiss all
+          .pull-right
+            span.label.label-success Read: {{getReadPosts.length}}
+            |&nbsp;
+            span.label.label-success Unread: {{getUnreadPosts.length}}
         ul.list-group
           li.list-group-item(
             v-for="post in paginatedPosts"
@@ -14,7 +20,9 @@
             a(
               href="#"
               @click.prevent="setActivePost(post)"
-            ) {{post.data.title}}
+            )
+              span.text-muted.small {{formatDate(post.data.created)}}
+              p {{post.data.title}}
             p.text-right
               button.btn.btn-danger.btn-xs(
                 type="button"
@@ -92,6 +100,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
   data () {
@@ -123,6 +132,9 @@ export default {
     }
   },
   methods: {
+    formatDate (theDate) {
+      return moment(new Date(theDate * 1000), 'YYYYMMDD').fromNow()
+    },
     aboutThis () {
       alert('Mr. Reddit\nVue.js Test Application\n\nCali Rojas, Costa Rica')
     },
@@ -133,6 +145,9 @@ export default {
       this.$store.dispatch('setPostRead', {
         post
       })
+    },
+    dismissAll () {
+      this.$store.dispatch('dismissAll')
     },
     dismissPost (post) {
       this.$store.dispatch('dismissPost', {
