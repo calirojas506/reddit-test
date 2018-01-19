@@ -1,6 +1,14 @@
 # reddit-test
 
-> Reddit API test
+> reddit top posts
+
+# IMPORTANT
+Missing technical specs/funcionality:
+- Saving pictures in the picture gallery
+
+Missing files:
+- Example JSON file (top.json) is listed.
+- Example Video of functionality is attached
 
 ## Build Setup
 
