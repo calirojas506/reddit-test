@@ -8,7 +8,7 @@ import store from './store'
 
 Vue.use(Vuex)
 Vue.config.productionTip = false
-
+require('vue2-animate/dist/vue2-animate.min.css')
 require('bootstrap/dist/css/bootstrap.min.css')
 require('font-awesome/css/font-awesome.min.css')
 

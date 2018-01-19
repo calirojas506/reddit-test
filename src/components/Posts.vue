@@ -1,105 +1,108 @@
 <template lang="pug">
   .c-posts
-    .row(
-      v-if="topPosts.length"
+    transition-group(
+      name="fadeLeft"
     )
-      .col-sm-5
-        .text-left
-          button.btn.btn-danger(
-            type="button"
-            @click="dismissAll"
-          ) &times; Dismiss all
-          .pull-right
-            span.label.label-success Read: {{getReadPosts.length}}
-            |&nbsp;
-            span.label.label-success Unread: {{getUnreadPosts.length}}
-        ul.list-group
-          li.list-group-item(
-            v-for="post in paginatedPosts"
+      .row(
+        v-if="topPosts.length"
+        key="a"
+      )
+        .col-sm-5
+          .text-left
+            button.btn.btn-danger(
+              type="button"
+              @click="dismissAll"
+            ) &times; Dismiss all
+            .pull-right
+              span.label.label-success Read: {{getReadPosts.length}}
+              |&nbsp;
+              span.label.label-success Unread: {{getUnreadPosts.length}}
+          transition-group.list-group(
+            name="zoomLeft"
+            tag="ul"
           )
-            a(
-              href="#"
-              @click.prevent="setActivePost(post)"
-            )
-              span.text-muted.small {{formatDate(post.data.created)}}
-              p {{post.data.title}}
-            p.text-right
-              button.btn.btn-danger.btn-xs(
-                type="button"
-                @click="dismissPost(post)"
-              ) &times; Dismiss
-        p.text-right
-          ul.pagination(
-            v-show="topPosts.length"
-          )
-            li(
-              v-for="page in paginationTotalPages"
-              :class="{'active': page === pagination.currentPage}"
+            li.list-group-item(
+              v-for="(post, index) in paginatedPosts"
+              :key="index"
             )
               a(
                 href="#"
-                @click.prevent="pagination.currentPage = page"
-              ) {{page}}
-
-      .col-sm-7
-        .right-side(
-          v-if="activePost.data"
-        )
-          .panel.panel-default
-            .panel-body
-              h2 {{activePost.data.title}}
-              h3 Author: {{activePost.data.author}}
-                span.label.label-success.pull-right {{activePost.data.num_comments}} comments
-              hr
-              a(
-                :href="activePost.data.url"
-                target="_blank"
+                @click.prevent="setActivePost(post)"
               )
-                img.img-rounded(
-                  :src="activePost.data.thumbnail"
-                  v-if="activePost.data.thumbnail !== 'default' && activePost.data.thumbnail !== 'nsfw'"
-                  align="left"
-                )
-              p.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fringilla orci justo,
-                nec finibus purus consequat vel. Nullam facilisis ligula a tempor feugiat. Nam pulvinar
-                turpis eget magna ullamcorper venenatis. Ut feugiat purus vel quam ultrices egestas.
-                Etiam magna urna, semper et pretium vel, egestas eget turpis. Mauris ullamcorper augue
-                eu elit tincidunt egestas. Praesent posuere mi velit, in pulvinar arcu faucibus a. Sed
-                vel consequat neque, quis interdum risus. Integer ut risus magna. Nulla quis metus id
-                neque iaculis commodo. Donec porta aliquam purus vitae consectetur. Quisque venenatis
-                arcu ut feugiat mattis. Quisque non nulla ut risus varius ultricies. Nunc maximus porttitor
-                rutrum. Maecenas id finibus magna. Nunc sit amet tempus dui, ut pretium orci.
-              p.
-                Ut ipsum sapien, consequat sit amet venenatis non, feugiat id purus. Nam at posuere
-                lectus, id gravida augue. Aenean lacinia ultrices ante, sit amet viverra velit tempus ut.
-                Morbi ultricies pulvinar nisi malesuada faucibus. Duis viverra porta pretium. Mauris at
-                feugiat diam. Nulla facilisi. Integer hendrerit tellus vel enim pretium luctus. Duis in diam
-                mauris. Aliquam felis nibh, vestibulum ut gravida sit amet, pulvinar non nibh. Nulla mauris
-                tortor, ornare id egestas vel, congue nec orci.
+                span.text-muted.small {{formatDate(post.data.created)}}
+                p {{post.data.title}}
               p.text-right
-                a(
-                  :href="'https://www.reddit.com' + activePost.data.permalink"
-                  target="_blank"
-                ) Permalink
-              hr
-              form(
-                @submit.prevent=""
+                button.btn.btn-danger.btn-xs(
+                  type="button"
+                  @click="dismissPost(post)"
+                ) &times; Dismiss
+          p.text-right
+            ul.pagination(
+              v-show="topPosts.length"
+            )
+              li(
+                v-for="page in paginationTotalPages"
+                :class="{'active': page === pagination.currentPage}"
               )
-                .form-group
-                  label.control-label Comment:
-                  textarea.form-control(
-                    rows="4"
+                a(
+                  href="#"
+                  @click.prevent="pagination.currentPage = page"
+                ) {{page}}
+
+        .col-sm-7
+          .right-side(
+            v-if="activePost.data"
+          )
+            .panel.panel-default
+              .panel-body
+                h2 {{activePost.data.title}}
+                h3 Author: {{activePost.data.author}}
+                  span.label.label-success.pull-right {{activePost.data.num_comments}} comments
+                hr
+                a(
+                  :href="activePost.data.url"
+                  target="_blank"
+                )
+                  img.img-rounded(
+                    :src="activePost.data.thumbnail"
+                    v-if="activePost.data.thumbnail !== 'default' && activePost.data.thumbnail !== 'nsfw'"
+                    align="left"
                   )
-                .text-right
-                  button.btn.btn-success(
-                    type="submit"
-                  ) Submit
-    .row(
-      v-else
-    )
-      .col-sm-12
-        .alert.alert-info.small No posts to show
+                p.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec fringilla orci justo,
+                  nec finibus purus consequat vel. Nullam facilisis ligula a tempor feugiat. Nam pulvinar
+                  turpis eget magna ullamcorper venenatis. Ut feugiat purus vel quam ultrices egestas.
+                  Etiam magna urna, semper et pretium vel, egestas eget turpis. Mauris ullamcorper augue
+                  eu elit tincidunt egestas. Praesent posuere mi velit, in pulvinar arcu faucibus a. Sed
+                  vel consequat neque, quis interdum risus. Integer ut risus magna. Nulla quis metus id
+                  neque iaculis commodo. Donec porta aliquam purus vitae consectetur. Quisque venenatis
+                  arcu ut feugiat mattis. Quisque non nulla ut risus varius ultricies. Nunc maximus porttitor
+                  rutrum. Maecenas id finibus magna. Nunc sit amet tempus dui, ut pretium orci.
+                p.
+                  Ut ipsum sapien, consequat sit amet venenatis non, feugiat id purus. Nam at posuere
+                  lectus, id gravida augue. Aenean lacinia ultrices ante, sit amet viverra velit tempus ut.
+                  Morbi ultricies pulvinar nisi malesuada faucibus. Duis viverra porta pretium. Mauris at
+                  feugiat diam. Nulla facilisi. Integer hendrerit tellus vel enim pretium luctus. Duis in diam
+                  mauris. Aliquam felis nibh, vestibulum ut gravida sit amet, pulvinar non nibh. Nulla mauris
+                  tortor, ornare id egestas vel, congue nec orci.
+                p.text-right
+                  a(
+                    :href="'https://www.reddit.com' + activePost.data.permalink"
+                    target="_blank"
+                  ) Permalink
+                hr
+                form(
+                  @submit.prevent=""
+                )
+                  .form-group
+                    label.control-label Comment:
+                    textarea.form-control(
+                      rows="4"
+                    )
+                  .text-right
+                    button.btn.btn-success(
+                      type="submit"
+                    ) Submit
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
@@ -181,7 +184,7 @@ export default {
   .c-posts{
     .list-group{
       .list-group-item{
-        transition: all ease .3s;
+        // transition: all ease .3s;
 
         a{
           color: $vue-secondary;
